@@ -76,7 +76,12 @@
         <div class="flex flex-center q-px-lg">
           Ya tienes cuenta
           <q-space></q-space>
-          <div @click="$emit('changeComponent')">Inicia sesion</div>
+          <div
+            @click="$emit('changeComponent')"
+            style="cursor: pointer; color: blue"
+          >
+            Inicia sesion
+          </div>
         </div>
       </q-form>
     </q-card-section>

@@ -11,7 +11,7 @@
     </q-card-section>
     <q-card-section class="q-mt-xl">
       <div class="text-center q-mt-lg q-pt-xl">
-        <div class="col text-h6 ellipsis">Inicia Sesion</div>
+        <div class="col text-h4 ellipsis">Inicia Sesion</div>
         <q-separator></q-separator>
       </div>
     </q-card-section>
@@ -46,8 +46,8 @@
             class="full-width"
             rounded
             size="md"
-            label="Login"
-            to="/"
+            label="Iniciar Sesion"
+            to="/main"
             type="button"
             color="primary"
           />
@@ -55,11 +55,16 @@
         <div class="flex flex-center q-px-lg">
           No tienes cuenta
           <q-space></q-space>
-          <div @click="$emit('changeComponent')">Registrate</div>
+          <div
+            @click="$emit('changeComponent')"
+            style="cursor: pointer; color: blue"
+          >
+            Registrate
+          </div>
         </div>
       </q-form>
     </q-card-section>
-    <q-card-section class="flex flex-center">
+    <q-card-section v-show="false" class="flex flex-center">
       <div class="text-center" style="max-width: 500px">
         Asisto.GO es una aplicacion web multiplataforma dise;ada para hacer tu
         vida mas facil
