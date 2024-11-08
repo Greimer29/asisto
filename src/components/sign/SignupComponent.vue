@@ -30,19 +30,19 @@
           lazy-rules
         />
         <q-input outlined rounded v-model="user.ci" label="Cedula" lazy-rules />
-        <q-input
-          outlined
-          rounded
-          v-model="user.phone"
-          label="telefono"
-          lazy-rules
-        />
         <q-input outlined rounded v-model="user.rol" label="Rol" lazy-rules />
         <q-input
           outlined
           rounded
-          v-model="user.username"
-          label="Username"
+          v-model="user.bornDate"
+          label="Fecha de nacimiento"
+          lazy-rules
+        />
+        <q-input
+          outlined
+          rounded
+          v-model="user.email"
+          label="Email"
           lazy-rules
         />
 
