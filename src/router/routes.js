@@ -21,15 +21,15 @@ const routes = [
       },
       {
         path: "/control",
-        component: () => import("pages/ControlPage.vue"),
+        component: () => import("pages/control/ControlPage.vue"),
         children: [
           {
             path: "/control/personal",
-            component: () => import("pages/PersonalPage.vue"),
+            component: () => import("pages/control/PersonalPage.vue"),
           },
           {
             path: "/control/asistances",
-            component: () => import("pages/AsistancelistPage.vue"),
+            component: () => import("pages/control/AsistancelistPage.vue"),
           },
         ],
       },

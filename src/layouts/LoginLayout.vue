@@ -3,7 +3,7 @@
     <q-page-container>
       <q-page class="flex flex-center aja">
         <div class="grid-system" style="min-height: 80vh">
-          <div class="column-1">
+          <div class="column-1 flex flex-column items-start z-top">
             <q-carousel
               class="full-width full-height"
               animated
@@ -33,13 +33,15 @@
               />
             </q-carousel>
           </div>
-          <div class="column-2 flex flex-center">
+          <div class="column-2 flex flex-column items-end">
             <SigninComponent
+              style="min-height: 780px; max-height: 780px"
               v-if="!register"
               @change-component="register = !register"
               class="column-in"
             />
             <SignupComponent
+              style="min-height: 780px; max-height: 780px"
               v-if="register"
               @change-component="register = !register"
               class="column-in"
@@ -90,9 +92,15 @@ export default defineComponent({
   flex-direction: row;
   width: 90%;
 }
-
+.z-top {
+  z-index: 10;
+}
 .aja {
   background-image: url("../../public/images/login/loginLayout.jpg");
+}
+.pruebe {
+  padding-left: 6em;
+  padding-right: 6em;
 }
 
 .column-1,
@@ -115,17 +123,12 @@ export default defineComponent({
 @keyframes fadeInRight {
   from {
     opacity: 0;
-    transform: translateX(20%);
+    transform: translateX(-20%);
   }
   to {
     opacity: 1;
     transform: translateX(0);
   }
-}
-
-.pruebe {
-  padding-left: 6em;
-  padding-right: 6em;
 }
 
 @keyframes fadeOutLeft {
