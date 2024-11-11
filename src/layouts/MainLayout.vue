@@ -13,14 +13,31 @@
         <div>
           <q-item>
             <q-item-section avatar>
-              <q-avatar>
+              <q-avatar size="48px">
                 <img
                   src="https://cdn.quasar.dev/img/avatar6.jpg"
                   draggable="false"
                 />
               </q-avatar>
             </q-item-section>
-            <q-item-section style="cursor: pointer">Text only</q-item-section>
+            <q-item-section style="cursor: pointer">
+              <div class="text-subtitle1">
+                {{ MyUserData.theUser.name }} {{ MyUserData.theUser.lastName }}
+              </div>
+              <div class="text-caption">
+                {{
+                  `${
+                    MyUserData.theUser.rol === 1
+                      ? "Administracion"
+                      : MyUserData.theUser.rol === 2
+                      ? "Pertero"
+                      : MyUserData.theUser.rol === 3
+                      ? "Docente"
+                      : "Limpieza"
+                  }`
+                }}
+              </div>
+            </q-item-section>
             <q-menu>
               <q-list style="min-width: 100px">
                 <q-item
@@ -54,7 +71,8 @@
 
 <script>
 import { useRouter } from "vue-router";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { useQuasar } from "quasar";
 
 const menuList = [
   {
@@ -88,11 +106,19 @@ export default defineComponent({
 
   setup() {
     const router = useRouter();
+    const $q = useQuasar();
+    const MyUserData = $q.sessionStorage.getItem("DataUser");
+
     return {
-      goTo(link) {
-        router.push(link);
-      },
+      MyUserData,
       menuList,
+      goTo(link) {
+        if (link === "/") {
+          router.replace(link);
+        } else {
+          router.push(link);
+        }
+      },
     };
   },
 });
