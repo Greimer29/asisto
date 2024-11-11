@@ -12,17 +12,21 @@
     <q-card-section class="q-mt-xl">
       <div class="text-center q-mt-lg q-pt-xl">
         <div class="col text-h4 ellipsis">Inicia Sesion</div>
+        <div class="col text-subtitle1">
+          Inicia sesion en ASISTO GO para acceder a las maravilals de esta app
+        </div>
         <q-separator></q-separator>
       </div>
     </q-card-section>
-    <q-card-section class="pruebe">
-      <q-form class="q-gutter-md">
+    <q-card-section class="pruebe q-mt-sm">
+      <q-form>
         <q-input
           outlined
           rounded
-          v-model="username"
-          label="Username"
+          v-model="email"
+          label="Email"
           lazy-rules
+          :rules="[(val) => val.length > 0 || 'Campo requerido']"
         />
 
         <q-input
@@ -31,6 +35,7 @@
           v-model="password"
           :type="isPwd ? 'password' : 'text'"
           label="Password"
+          :rules="[(val) => val.length > 0 || 'Campo requerido']"
         >
           <template v-slot:append>
             <q-icon
@@ -47,12 +52,12 @@
             rounded
             size="md"
             label="Iniciar Sesion"
-            to="/main"
+            @click="loginUser"
             type="button"
             color="primary"
           />
         </div>
-        <div class="flex flex-center q-px-lg">
+        <div class="flex flex-center q-px-lg q-mt-md">
           No tienes cuenta
           <q-space></q-space>
           <div
@@ -64,63 +69,61 @@
         </div>
       </q-form>
     </q-card-section>
-    <q-card-section v-show="false" class="flex flex-center">
-      <div class="text-center" style="max-width: 500px">
-        Asisto.GO es una aplicacion web multiplataforma dise;ada para hacer tu
-        vida mas facil
-      </div>
-    </q-card-section>
+    <q-inner-loading
+      :showing="loading"
+      label="Please wait..."
+      label-class="text-teal"
+      label-style="font-size: 1.1em"
+    />
   </q-card>
 </template>
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
+import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "SigninComponent",
   setup() {
-    const username = ref("kenyer@gmail.com");
+    const email = ref("kenyer@gmail.com");
     const password = ref("123");
+    const loading = ref(false);
+    const $q = useQuasar();
+    const router = useRouter();
 
-    const loginUser = () => {
-      $q.sessionStorage.set("DataUser", provideUser);
-      return router.replace("/main");
-      loading.value = true;
-      api
-        .post("/users/login", {
-          email: email.value,
-          password: password.value,
-        })
-        .then((res) => {
-          const { data } = res;
-          try {
-            $q.sessionStorage.set("DataUser", data.dataUser);
-            $q.notify({
-              message: `Bienvenido ${data.dataUser.theUser.name}`,
-              position: "top-right",
-              color: "positive",
-            });
-            loading.value = false;
-            router.replace("/main");
-            return console.log(data);
-          } catch (error) {
-            console.log(error);
-          }
-        })
-        .catch((err) => {
+    const loginUser = async () => {
+      if (email.value.trim() && password.value.trim()) {
+        loading.value = true;
+        try {
+          const { data } = await api.post("/users/login", {
+            email: email.value,
+            password: password.value,
+          });
+          loading.value = false;
+
+          $q.sessionStorage.set("DataUser", data);
           $q.notify({
-            message: `Error: ${err.response.data}`,
+            message: `Bienvenido ${data.theUser.name}`,
+            position: "top-right",
+            color: "positive",
+          });
+          router.replace("/main");
+        } catch (error) {
+          loading.value = false;
+          console.log(error);
+          $q.notify({
+            message: `Error: ${error.response.data}`,
             color: "negative",
           });
-          console.log(err);
-          loading.value = false;
-        });
+        }
+      }
     };
 
     return {
-      username,
+      loading,
+      email,
       password,
       isPwd: ref(true),
       loginUser,
