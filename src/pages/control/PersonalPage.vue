@@ -1,6 +1,6 @@
 <template>
   <q-card class="q-ma-sm text-center">
-    <div class="q-pt-md text-h5 text-bold">Personal</div>
+    <div class="q-pt-md text-h5 text-bold">U.E.C.A.M Personal</div>
     <q-separator inset />
     <div class="q-pa-md">
       <q-table
@@ -8,7 +8,7 @@
         bordered
         grid
         title="Personal"
-        :rows="data"
+        :rows="personal"
         :columns="columns"
         row-key="name"
         :filter="filter"
@@ -31,11 +31,7 @@
         </template>
         <template v-slot:item="props">
           <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
-            <PersonalComponent
-              :name="props.row.name"
-              :avatar="props.row.avatar"
-              :des="props.row.des"
-            />
+            <PersonalComponent :userData="props.row" />
           </div>
         </template>
       </q-table>
@@ -44,8 +40,9 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import PersonalComponent from "src/components/control/PersonalComponent.vue";
+import { api } from "src/boot/axios";
 
 const columns = [
   { name: "Name", label: "Name", field: "name", sortable: true, align: "left" },
@@ -123,10 +120,20 @@ export default defineComponent({
   name: "PersonalPage",
   components: { PersonalComponent },
   setup() {
+    const personal = ref([]);
+
+    onMounted(() => {
+      getPersonal();
+    });
+    const getPersonal = async () => {
+      const { data } = await api.get("/users");
+      console.log(data);
+      personal.value = data;
+    };
     return {
+      personal,
       filter: ref(""),
       columns,
-      data,
       pagination: ref({
         rowsPerPage: 0,
       }),
