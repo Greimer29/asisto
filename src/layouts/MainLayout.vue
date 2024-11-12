@@ -25,17 +25,7 @@
                 {{ MyUserData.theUser.name }} {{ MyUserData.theUser.lastName }}
               </div>
               <div class="text-caption">
-                {{
-                  `${
-                    MyUserData.theUser.rol === 1
-                      ? "Administracion"
-                      : MyUserData.theUser.rol === 2
-                      ? "Pertero"
-                      : MyUserData.theUser.rol === 3
-                      ? "Docente"
-                      : "Limpieza"
-                  }`
-                }}
+                {{ MyUserData.theUser.rol }}
               </div>
             </q-item-section>
             <q-menu>
