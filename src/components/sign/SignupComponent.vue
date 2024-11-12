@@ -172,11 +172,7 @@ import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 import { api } from "src/boot/axios";
 
-const rols = [
-  { label: "Administracion", value: 1 },
-  { label: "Portero", value: 2 },
-  { label: "Docente", value: 3 },
-];
+const rols = ["Administracion", "Docente", "Portero", "Limpieza"];
 
 export default defineComponent({
   name: "SignupComponent",
@@ -187,18 +183,18 @@ export default defineComponent({
     const persistent = ref(false);
     const cod = ref("");
     const user = ref({
-      name: "qwe",
-      lastName: "qwe",
-      ci: "123",
+      name: "",
+      lastName: "",
+      ci: "",
       rol: "",
       bornDate: "1960/01/01",
-      email: "qwe",
-      password: "123",
+      email: "",
+      password: "",
     });
 
     const createAccount = async (user) => {
       try {
-        const newUser = await api.post("/users", { user });
+        const { userData } = await api.post("/users", { user });
         $q.notify({
           message: "Cuenta creada exitosamente",
           position: "top-right",
@@ -239,26 +235,27 @@ export default defineComponent({
       try {
         const { data } = await api.post("/users/validate", { cod: cod.value });
         createAccount(user.value);
-        $q.notify({
-          message: data.msg,
-          position: "top-right",
-          color: "positive",
-        });
       } catch (error) {
         loading.value = false;
         $q.notify({
-          message: error.response.data.msg,
+          message: error,
           position: "top-right",
           color: "negative",
         });
+        console.log(error);
       }
     };
 
     const validations = () => {
       loading.value = true;
       if (validateFields()) {
-        if (user.value.rol.value === 1 || user.value.rol.value === 2) {
+        if (
+          user.value.rol === "Administracion" ||
+          user.value.rol === "Portero"
+        ) {
           persistent.value = true;
+        } else {
+          createAccount(user.value);
         }
       }
     };
