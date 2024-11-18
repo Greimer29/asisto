@@ -29,7 +29,7 @@ const routes = [
           },
           {
             path: "/control/asistances",
-            component: () => import("pages/control/AsistancelistPage.vue"),
+            component: () => import("pages/control/AttendancePage.vue"),
           },
         ],
       },

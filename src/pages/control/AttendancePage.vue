@@ -9,15 +9,22 @@
         flat
         bordered
         :title="today"
-        :rows="rows"
+        :rows="attendances"
         :columns="columns"
         virtual-scroll
         color="primary"
         row-key="name"
-        hide-bottom
         v-model:pagination="pagination"
         :rows-per-page-options="[0]"
+        no-data-label="No se ha registrado ninguna entrada para hoy"
       >
+        <template v-slot:body-cell-actions="props">
+          <q-td :props="props">
+            <div>
+              <q-btn label="Entrada" no-caps color="cyan-5" dense />
+            </div>
+          </q-td>
+        </template>
         <template v-slot:top-right>
           <q-btn
             color="positive"
@@ -35,13 +42,13 @@
         bordered
         virtual-scroll
         title="Add a person to the list"
-        :rows="rows"
+        :rows="personal"
         :columns="columns"
         color="primary"
         row-key="name"
-        hide-bottom
         v-model:pagination="pagination"
         :rows-per-page-options="[0]"
+        no-results-label="No pude encontrar a esa persona, prueba usando el nombre"
       >
         <template v-slot:top-right>
           <q-btn
@@ -51,49 +58,64 @@
             @click="addPerson = !addPerson"
           />
         </template>
+        <template v-slot:body-cell-avatar="props">
+          <q-td :props="props">
+            <div>
+              <q-avatar>
+                <q-img src="https://cdn.quasar.dev/img/avatar6.jpg"
+              /></q-avatar>
+            </div>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-actions="props">
+          <q-td :props="props">
+            <div>
+              <q-btn
+                label="Entrada"
+                no-caps
+                color="cyan-5"
+                dense
+                @click="markEntry(props.row)"
+              />
+            </div>
+          </q-td>
+        </template>
       </q-table>
     </div>
   </q-card>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import moment from "moment";
+import { api } from "src/boot/axios";
 
 const columns = [
   {
-    name: "name",
-    required: true,
-    label: "Dessert (100g serving)",
+    name: "avatar",
+    label: "Image",
+    field: "avatar",
+    sortable: true,
     align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
   },
   {
-    name: "calories",
-    align: "center",
-    label: "Calories",
-    field: "calories",
+    name: "name",
+    label: "Nombre",
+    field: "name",
     sortable: true,
-  },
-  { name: "fat", label: "Fat (g)", field: "fat", sortable: true },
-  { name: "carbs", label: "Carbs (g)", field: "carbs" },
-  { name: "protein", label: "Protein (g)", field: "protein" },
-  { name: "sodium", label: "Sodium (mg)", field: "sodium" },
-  {
-    name: "calcium",
-    label: "Calcium (%)",
-    field: "calcium",
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+    align: "left",
   },
   {
-    name: "iron",
-    label: "Iron (%)",
-    field: "iron",
+    name: "rol",
+    label: "Rol",
+    field: "rol",
     sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+    align: "left",
+  },
+  {
+    name: "actions",
+    label: "Acciones",
+    align: "right",
   },
 ];
 
@@ -170,9 +192,43 @@ const rows = [
   },
 ];
 export default defineComponent({
-  name: "AsistancelistPage",
+  name: "AttendancePage",
   setup() {
     const today = moment().format("dddd DD/MM/YYYY");
+    const personal = ref([]);
+    const attendances = ref([]);
+    const todayDate = ref("");
+
+    onMounted(() => {
+      getPersonal();
+      getAttendances();
+    });
+
+    const getPersonal = async () => {
+      try {
+        const { data } = await api.get("/users");
+        data.forEach((element) => {
+          element.name = `${element.name} ${element.lastName}`;
+        });
+        personal.value = data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const getAttendances = async () => {
+      try {
+        const { data } = await api.get("/attendance");
+        attendances.value = data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const markEntry = (user) => {
+      todayDate.value = moment().format("h:mm a");
+      console.log(todayDate.value);
+    };
 
     return {
       columns,
@@ -182,6 +238,10 @@ export default defineComponent({
       pagination: ref({
         rowsPerPage: 0,
       }),
+      personal,
+      attendances,
+      getPersonal,
+      markEntry,
     };
   },
 });
