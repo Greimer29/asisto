@@ -17,19 +17,23 @@
             >
               <q-carousel-slide
                 :name="1"
-                img-src="https://cdn.quasar.dev/img/mountains.jpg"
+                img-src="/public/images/login/maranatha_play.jpeg"
               />
               <q-carousel-slide
                 :name="2"
-                img-src="https://cdn.quasar.dev/img/parallax1.jpg"
+                img-src="/public/images/login/maranatha_church.jpeg"
               />
               <q-carousel-slide
                 :name="3"
-                img-src="https://cdn.quasar.dev/img/parallax2.jpg"
+                img-src="/public/images/login/maranatha_people.jpeg"
               />
               <q-carousel-slide
                 :name="4"
-                img-src="https://cdn.quasar.dev/img/quasar.jpg"
+                img-src="public/images/login/marnatha_room.jpeg"
+              />
+              <q-carousel-slide
+                :name="5"
+                img-src="/public/images/login/maranatha_kids.jpeg"
               />
             </q-carousel>
           </div>

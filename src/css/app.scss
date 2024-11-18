@@ -1,1 +1,17 @@
 // app global css in SCSS form
+
+.column-in {
+  animation-name: fadeInRight;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

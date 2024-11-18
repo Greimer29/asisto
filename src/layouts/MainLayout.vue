@@ -84,6 +84,12 @@ const menuList = [
     link: "/control/personal",
   },
   {
+    title: "Admin",
+    caption: "github.com/quasarframework",
+    icon: "fact_check",
+    link: "/admin/metrics",
+  },
+  {
     title: "Cerrar sesion",
     caption: "chat.quasar.dev",
     icon: "logout",
