@@ -78,16 +78,16 @@ const menuList = [
     link: "/account",
   },
   {
-    title: "Control",
-    caption: "github.com/quasarframework",
-    icon: "fact_check",
-    link: "/control/personal",
-  },
-  {
     title: "Admin",
     caption: "github.com/quasarframework",
     icon: "fact_check",
     link: "/admin/metrics",
+  },
+  {
+    title: "Control",
+    caption: "github.com/quasarframework",
+    icon: "fact_check",
+    link: "/control/personal",
   },
   {
     title: "Cerrar sesion",
@@ -111,6 +111,7 @@ export default defineComponent({
       goTo(link) {
         if (link === "/") {
           router.replace(link);
+          $q.sessionStorage.clear();
         } else {
           router.push(link);
         }
