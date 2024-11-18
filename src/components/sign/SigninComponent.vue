@@ -114,7 +114,7 @@ export default defineComponent({
           loading.value = false;
           console.log(error);
           $q.notify({
-            message: `Error: ${error.response.data}`,
+            message: error,
             color: "negative",
           });
         }

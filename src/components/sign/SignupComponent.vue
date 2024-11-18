@@ -1,12 +1,12 @@
 <template>
   <q-card class="full-width full-height" flat>
     <q-card-section>
-      <q-avatar size="140px" style="top: 20px" class="absolute-center shadow-7">
+      <q-avatar size="140px" style="top: 0px" class="absolute-center shadow-7">
         <img src="/public/images/login/logo-school.jpeg" />
       </q-avatar>
     </q-card-section>
     <q-card-section class="pruebe">
-      <div class="text-center q-pb-md q-mt-lg q-pt-lg">
+      <div class="text-center q-pb-md q-mt-sm q-pt-md">
         <div class="col text-h6 ellipsis">Crear cuenta</div>
         <q-separator></q-separator>
       </div>
@@ -14,7 +14,7 @@
         <q-scroll-area
           :thumb-style="thumbStyle"
           :bar-style="barStyle"
-          style="height: 620px"
+          style="height: 640px"
         >
           <q-input
             outlined
@@ -48,6 +48,15 @@
             label="Rol"
             lazy-rules
             :options="rols"
+            :rules="[(val) => !!val || 'Campo requerido']"
+          />
+          <q-select
+            outlined
+            rounded
+            v-model="horaryId"
+            label="Horario"
+            lazy-rules
+            :options="opHorary"
             :rules="[(val) => !!val || 'Campo requerido']"
           />
 
@@ -133,6 +142,7 @@
     />
 
     <q-dialog
+      class="z-top"
       v-model="persistent"
       persistent
       transition-show="scale"
@@ -182,6 +192,8 @@ export default defineComponent({
     const $q = useQuasar();
     const persistent = ref(false);
     const cod = ref("");
+    const opHorary = ref([]);
+    const horaryId = ref("");
     const user = ref({
       name: "",
       lastName: "",
@@ -192,9 +204,29 @@ export default defineComponent({
       password: "",
     });
 
+    onMounted(() => {
+      getHorary();
+    });
+
+    const getHorary = async () => {
+      const { data } = await api.get("schedules");
+      opHorary.value = data.map((element) => {
+        return {
+          label: element.turn,
+          value: {
+            id: element.id,
+            timeIn: element.timeIn,
+            timeOut: element.timeOut,
+            turn: element.turn,
+          },
+        };
+      });
+      console.log(opHorary.value);
+    };
+
     const createAccount = async (user) => {
       try {
-        const { userData } = await api.post("/users", { user });
+        await api.post("/users", { user: user, scheduleId: horaryId.value });
         $q.notify({
           message: "Cuenta creada exitosamente",
           position: "top-right",
@@ -218,6 +250,7 @@ export default defineComponent({
         user.value.lastName.trim() &&
         user.value.ci.trim() &&
         user.value.rol !== "" &&
+        horaryId.value !== "" &&
         user.value.bornDate.trim() &&
         user.value.email.trim() &&
         user.value.password.trim()
@@ -268,6 +301,8 @@ export default defineComponent({
       loading,
       persistent,
       cod,
+      opHorary,
+      horaryId,
       thumbStyle: {
         right: "4px",
         borderRadius: "5px",
@@ -280,7 +315,7 @@ export default defineComponent({
         right: "2px",
         borderRadius: "9px",
         backgroundColor: "#027be3",
-        width: "9px",
+        width: "5px",
         opacity: 0.2,
       },
       createAccount,
@@ -291,6 +326,9 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.z-top {
+  z-index: 10;
+}
 .pruebe {
   padding-left: 6em;
   padding-right: 6em;
