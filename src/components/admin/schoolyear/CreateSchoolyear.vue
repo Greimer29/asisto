@@ -7,10 +7,9 @@
         icon="chevron_left"
         @click="$emit('changeComponent')"
       />
-      <div class="text-subtitle2">Completa los campos requeridos</div>
     </q-card-section>
     <q-card-section class="flex flex-center" v-if="edit">
-      <div class="text-subtitle2">Completa los campos requeridos</div>
+      <div class="text-subtitle1">Pasemos la asistencia</div>
       <q-btn
         class="absolute-right"
         flat
@@ -185,10 +184,35 @@ const createSchoolyear = async (schoolYear) => {
   }
 };
 
+const updateSchoolYear = async (schoolYear) => {
+  try {
+    const { data } = await api.patch(`schedules/${props.schoolYearData.id}`, {
+      schoolYear,
+    });
+    console.log(data);
+    loading.value = false;
+    emits("reloadTable");
+    emits("closeModal");
+    $q.notify({
+      message: "Año escolar editado exitosamente",
+      position: "top-right",
+      color: "positive",
+    });
+  } catch (error) {
+    console.log(error);
+    loading.value = false;
+    $q.notify({ message: error, position: "top-right", color: "negative" });
+  }
+};
+
 const valdiations = async (schoolYear) => {
   loading.value = true;
   if (validateFields(schoolYear)) {
-    createSchoolyear(schoolYear);
+    if (!props.edit) {
+      createSchoolyear(schoolYear);
+    } else {
+      updateSchoolYear(schoolYear);
+    }
   }
 };
 </script>
