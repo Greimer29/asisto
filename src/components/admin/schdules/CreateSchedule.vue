@@ -95,7 +95,7 @@
         rounded
         class="full-width q-mt-md"
         color="primary"
-        label="Actualizar año escolar"
+        label="Actualizar Horario"
         @click="valdiations(schedule)"
       />
     </q-card-section>
