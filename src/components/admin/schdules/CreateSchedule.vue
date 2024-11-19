@@ -87,7 +87,7 @@
         rounded
         class="full-width q-mt-md"
         color="primary"
-        label="Crear school year"
+        label="Crear Horario"
         @click="valdiations(schedule)"
       />
       <q-btn
