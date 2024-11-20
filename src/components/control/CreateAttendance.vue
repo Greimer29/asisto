@@ -1,17 +1,17 @@
 <template>
   <q-card flat>
-    <q-card-section class="flex flex-center q-py-xs">
+    <q-card-section class="flex flex-center">
       <q-btn
         class="absolute-left"
         flat
         icon="chevron_left"
         @click="emits('changeComponent')"
       />
-      <div class="text-subtitle1">Pasemos la asistencia</div>
+      <div class="text-subtitle1 q-py-none">Pasemos la asistencia</div>
     </q-card-section>
-    <q-card-section>
+    <q-card-section class="q-px-none">
       <q-table
-        style="height: 69vh"
+        style="height: 70.5vh"
         flat
         bordered
         virtual-scroll
@@ -52,16 +52,18 @@
 </template>
 
 <script setup>
-import { onMounted, ref, defineEmits } from "vue";
+import { onMounted, ref, defineEmits, defineProps } from "vue";
 import moment from "moment";
 
+const props = defineProps({
+  attendanceList: Object,
+});
 const emits = defineEmits(["changeComponent"]);
 import { api } from "src/boot/axios";
 
 const todayDate = ref("");
 const todayTime = ref("");
 const personal = ref([]);
-const listedUser = ref(true);
 const pagination = ref({
   rowsPerPage: 0,
 });

@@ -3,7 +3,7 @@
     style="height: 77vh"
     flat
     bordered
-    :title="today"
+    :title="`${attendanceList.day} ${attendanceList.date}`"
     :rows="attendances"
     :columns="columns"
     virtual-scroll
@@ -39,20 +39,51 @@
     <template v-slot:top-right>
       <q-btn
         flat
+        color="primary"
+        icon="system_update_alt"
+        @click="askExport = !askExport"
+      />
+      <q-btn
+        flat
         color="positive"
         icon="fact_check"
         @click="emits('changeComponent')"
       />
     </template>
   </q-table>
+  <q-dialog v-model="askExport" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <span class="q-ml-sm">
+          ¿Desea finalizar esta lista de asistencias de hoy?
+        </span>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn
+          flat
+          label="Finalizar"
+          color="primary"
+          v-close-popup
+          @click="endAttendanceList()"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
 import moment from "moment";
-import { ref, defineEmits, onMounted } from "vue";
+import { ref, defineEmits, defineProps, onMounted } from "vue";
 import { api } from "src/boot/axios";
 
+const props = defineProps({
+  attendanceList: Object,
+});
 const emits = defineEmits(["changeComponent"]);
+
+const askExport = ref(false);
 
 onMounted(() => {
   getAttendances();
@@ -95,8 +126,6 @@ const columns = [
 const attendances = ref([]);
 const todayTime = ref("");
 
-const today = moment().format("dddd DD/MM/YYYY");
-
 const getAttendances = async () => {
   try {
     const { data } = await api.get("/attendances");
@@ -108,6 +137,13 @@ const getAttendances = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const endAttendanceList = async () => {
+  const data = await api.patch(`attendances-list/${props.attendanceList.id}`, {
+    attendanceList: { state: false },
+  });
+  console.log(data);
 };
 
 const markExit = async (attendance) => {
