@@ -20,14 +20,14 @@
         <AttendanceTable
           v-if="!addPerson"
           @change-component="addPerson = !addPerson"
-          :attendanceList="attendanceList"
+          :attendance-list="attendanceList"
         />
       </div>
     </div>
     <div class="column-in q-px-md" v-if="addPerson">
       <CreateAttendance
         @change-component="addPerson = !addPerson"
-        :attendanceList="attendanceList"
+        :attendance-list="attendanceList"
       />
     </div>
   </q-card>
@@ -51,28 +51,24 @@ export default defineComponent({
     const newAttendanceList = ref({
       date: moment().format("YYYY/MM/DD"),
       day: moment().format("dddd"),
+      state: true,
     });
 
     const createAttendanceList = async () => {
-      const { data } = await api.post("attendances-list", {
+      await api.post("attendancelist", {
         attendanceList: newAttendanceList.value,
       });
-      attendanceList.value = data;
 
-      getTodayAttendanceList();
+      getTodayAttendanceList(moment().format());
     };
 
-    const getTodayAttendanceList = async () => {
-      const { data } = await api.get(
-        `attendances-list/${moment().format("YYYY-MM-DD")}/today`
-      );
+    const getTodayAttendanceList = async (date) => {
+      const { data } = await api.get(`attendancelist/${date}/date`);
       attendanceList.value = data;
+      console.log(attendanceList.value);
     };
 
-    getTodayAttendanceList();
-    setInterval(() => {
-      getTodayAttendanceList();
-    }, 1000);
+    getTodayAttendanceList(moment().format());
 
     return {
       attendanceList,

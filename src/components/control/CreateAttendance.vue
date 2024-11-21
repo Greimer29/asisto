@@ -61,8 +61,6 @@ const props = defineProps({
 const emits = defineEmits(["changeComponent"]);
 import { api } from "src/boot/axios";
 
-const todayDate = ref("");
-const todayTime = ref("");
 const personal = ref([]);
 const pagination = ref({
   rowsPerPage: 0,
@@ -83,9 +81,9 @@ const columns = [
     align: "left",
   },
   {
-    name: "rol",
-    label: "Rol",
-    field: "rol",
+    name: "turn",
+    label: "Truno",
+    field: "turn",
     sortable: true,
     align: "left",
   },
@@ -106,25 +104,25 @@ const getPersonal = async () => {
 
     data.forEach((element) => {
       element.name = `${element.name} ${element.lastName}`;
-      element.isIn = validateAttendanceEntry(element);
     });
     personal.value = data.filter((element) => {
       return element.email !== "Admin@Admin.com";
     });
-    console.log(personal.value);
+    personal.value.forEach((element) => {
+      element.turn = element.schedule_users[0].turn;
+    });
   } catch (error) {
     console.log(error);
   }
 };
 
 const markEntry = async (user) => {
-  todayTime.value = moment().format("h:mm a");
-  todayDate.value = moment().format("YYYY/MM/DD");
   try {
     const data = await api.post("attendances", {
       attendance: {
-        timeIn: todayTime.value,
-        date: todayDate.value,
+        timeIn: moment().format("h:mm a"),
+        date: moment().format("YYYY/MM/DD"),
+        state: true,
         userId: user.id,
       },
     });
@@ -133,13 +131,5 @@ const markEntry = async (user) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-const validateAttendanceEntry = (user) => {
-  todayDate.value = moment().format("YYYY/MM/DD");
-
-  return user.attendances.some(
-    (attendance) => attendance.date === todayDate.value
-  );
 };
 </script>

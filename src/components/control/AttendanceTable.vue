@@ -4,7 +4,7 @@
     flat
     bordered
     :title="`${attendanceList.day} ${attendanceList.date}`"
-    :rows="attendances"
+    :rows="attendanceList.attendances"
     :columns="columns"
     virtual-scroll
     color="primary"
@@ -82,11 +82,8 @@ const props = defineProps({
   attendanceList: Object,
 });
 const emits = defineEmits(["changeComponent"]);
-
-const askExport = ref(false);
-
-onMounted(() => {
-  getAttendances();
+const pagination = ref({
+  rowsPerPage: 0,
 });
 
 const columns = [
@@ -123,24 +120,12 @@ const columns = [
     align: "center",
   },
 ];
-const attendances = ref([]);
+
+const askExport = ref(false);
 const todayTime = ref("");
 
-const getAttendances = async () => {
-  try {
-    const { data } = await api.get("/attendances");
-
-    data.forEach((element) => {
-      element.name = `${element.user.name} ${element.user.lastName}`;
-    });
-    attendances.value = data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const endAttendanceList = async () => {
-  const data = await api.patch(`attendances-list/${props.attendanceList.id}`, {
+  const data = await api.patch(`attendancelist/${props.attendanceList.id}`, {
     attendanceList: { state: false },
   });
   console.log(data);
@@ -160,7 +145,4 @@ const markExit = async (attendance) => {
     console.log(error);
   }
 };
-const pagination = ref({
-  rowsPerPage: 0,
-});
 </script>
