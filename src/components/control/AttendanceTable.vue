@@ -23,10 +23,11 @@
       </q-td>
     </template>
     <template v-slot:body-cell-actions="props">
+      {{ console.log(props.row) }}
       <q-td :props="props">
         <div>
           <q-btn
-            v-if="!props.row.timeOut"
+            v-if="props.row.state"
             label="Salida"
             no-caps
             color="cyan-5"
@@ -81,7 +82,7 @@ import { api } from "src/boot/axios";
 const props = defineProps({
   attendanceList: Object,
 });
-const emits = defineEmits(["changeComponent"]);
+const emits = defineEmits(["changeComponent", "reloadTable"]);
 const pagination = ref({
   rowsPerPage: 0,
 });
@@ -122,7 +123,10 @@ const columns = [
 ];
 
 const askExport = ref(false);
-const todayTime = ref("");
+
+onMounted(() => {
+  filterAttendances();
+});
 
 const endAttendanceList = async () => {
   const data = await api.patch(`attendancelist/${props.attendanceList.id}`, {
@@ -131,16 +135,22 @@ const endAttendanceList = async () => {
   console.log(data);
 };
 
+const filterAttendances = async () => {
+  props.attendanceList.attendances.forEach((element) => {
+    element.name = `${element.user.name} ${element.user.lastName}`;
+  });
+};
+
 const markExit = async (attendance) => {
-  todayTime.value = moment().format("hh:mm a");
   try {
     const data = await api.patch(`attendances/${attendance.id}`, {
       attendance: {
-        timeOut: todayTime.value,
+        timeOut: moment().format("hh:mm a"),
+        state: false,
       },
     });
+    emits("reloadTable");
     console.log(data);
-    getAttendances();
   } catch (error) {
     console.log(error);
   }

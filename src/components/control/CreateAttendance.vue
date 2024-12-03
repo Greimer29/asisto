@@ -34,6 +34,7 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
+            {{ console.log(props.row) }}
             <div>
               <q-btn
                 v-if="!props.row.isIn"
@@ -58,7 +59,7 @@ import moment from "moment";
 const props = defineProps({
   attendanceList: Object,
 });
-const emits = defineEmits(["changeComponent"]);
+const emits = defineEmits(["changeComponent", "reloadTable"]);
 import { api } from "src/boot/axios";
 
 const personal = ref([]);
@@ -121,12 +122,12 @@ const markEntry = async (user) => {
     const data = await api.post("attendances", {
       attendance: {
         timeIn: moment().format("h:mm a"),
-        date: moment().format("YYYY/MM/DD"),
         state: true,
         userId: user.id,
       },
     });
     console.log(data);
+    emits("reloadTable");
     getPersonal();
   } catch (error) {
     console.log(error);
