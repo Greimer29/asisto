@@ -21,6 +21,7 @@
           v-if="!addPerson"
           @change-component="addPerson = !addPerson"
           :attendance-list="attendanceList"
+          @reload-table="getTodayAttendanceList(moment().format())"
         />
       </div>
     </div>
@@ -28,6 +29,7 @@
       <CreateAttendance
         @change-component="addPerson = !addPerson"
         :attendance-list="attendanceList"
+        @reload-table="getTodayAttendanceList(moment().format())"
       />
     </div>
   </q-card>
@@ -71,9 +73,11 @@ export default defineComponent({
     getTodayAttendanceList(moment().format());
 
     return {
+      moment,
       attendanceList,
       addPerson: ref(false),
       createAttendanceList,
+      getTodayAttendanceList,
     };
   },
 });
