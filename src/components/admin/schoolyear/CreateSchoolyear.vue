@@ -127,7 +127,7 @@ const props = defineProps({
   edit: Boolean,
   schoolYearData: Object,
 });
-const emits = defineEmits(["changeComponent", "closeModal"]);
+const emits = defineEmits(["changeComponent", "closeModal", "reloadTable"]);
 
 const stateOp = ref([
   { label: "Inactivo", value: false },
@@ -186,7 +186,7 @@ const createSchoolyear = async (schoolYear) => {
 
 const updateSchoolYear = async (schoolYear) => {
   try {
-    const { data } = await api.patch(`schedules/${props.schoolYearData.id}`, {
+    const { data } = await api.patch(`schoolyears/${props.schoolYearData.id}`, {
       schoolYear,
     });
     console.log(data);

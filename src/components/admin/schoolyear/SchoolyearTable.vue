@@ -91,6 +91,7 @@
         :edit="true"
         :schoolYearData="schoolyearData"
         @closeModal="edit = false"
+        @reloadTable="getSchoolYears()"
       />
     </q-card>
   </q-dialog>
@@ -219,6 +220,7 @@ export default defineComponent({
       getSchoolYear,
       deleteSchoolYear,
       confirmDestroy,
+      getSchoolYears,
     };
   },
 });
