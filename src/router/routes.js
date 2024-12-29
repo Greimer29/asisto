@@ -33,6 +33,32 @@ const routes = [
           },
         ],
       },
+      {
+        path: "/admin",
+        component: () => import("pages/admin/AdminPage.vue"),
+        children: [
+          {
+            path: "/admin/metrics",
+            component: () => import("pages/admin/MetricsPage.vue"),
+          },
+          {
+            path: "/admin/school-years",
+            component: () => import("pages/admin/SchoolyearPage.vue"),
+          },
+          {
+            path: "/admin/attendance-list",
+            component: () => import("pages/admin/AttendancelistPage.vue"),
+          },
+          {
+            path: "/admin/schedules",
+            component: () => import("pages/admin/SchedulesPage.vue"),
+          },
+          {
+            path: "/admin/:month",
+            component: () => import("pages/admin/SchedulesPage.vue"),
+          },
+        ],
+      },
     ],
   },
 

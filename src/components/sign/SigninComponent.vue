@@ -46,7 +46,7 @@
           </template>
         </q-input>
 
-        <div class="full-width text-center q-pl-md">
+        <div class="full-width text-center">
           <q-btn
             class="full-width"
             rounded

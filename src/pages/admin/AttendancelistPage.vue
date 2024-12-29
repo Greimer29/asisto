@@ -17,16 +17,11 @@
 import { api } from "src/boot/axios";
 import AttendancesList from "src/components/admin/attendances/AttendancesList.vue";
 import AttendanceTable from "src/components/admin/attendances/AttendancesTable.vue";
-import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 
-const pagination = ref({
-  rowsPerPage: 0,
-});
 const realizedMonths = ref([]);
 const openMonth = ref(false);
 const rowData = ref(null);
-const attendaceList = ref([]);
 
 const getMonthName = (monthIndex) => {
   const monthNames = [

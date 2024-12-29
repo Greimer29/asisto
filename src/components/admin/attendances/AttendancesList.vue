@@ -11,6 +11,10 @@
         {{ monthData.label }}
       </div>
     </q-card-section>
+    <q-card-section v-if="attendanceList <= 0">
+      No encontramos listas de asistencias por este mes
+      <q-separator></q-separator>
+    </q-card-section>
     <q-card-section>
       <ExpansionItemAttendance
         v-for="(attlist, index) in attendanceList"

@@ -25,7 +25,7 @@
         @mouseenter="autoplay = false"
         @mouseleave="autoplay = true"
       >
-        <q-carousel-slide
+        <!-- <q-carousel-slide
           v-for="(item, index) in birthDudes"
           :key="index"
           :name="index"
@@ -42,6 +42,18 @@
               {{ item.bornDate }}
             </q-card-section>
           </q-card>
+        </q-carousel-slide> -->
+        <q-carousel-slide
+          v-for="(item, index) in birthDudes"
+          :key="index"
+          :name="index"
+          class="bg-black text-white"
+        >
+          <div class="column items-center justify-center q-gutter-md">
+            <q-img :src="item.imagen" style="max-width: 200px" />
+            <div class="text-h6">{{ item.name }}</div>
+            <div class="text-subtitle2">Edad: {{ item.age }}</div>
+          </div>
         </q-carousel-slide>
       </q-carousel>
     </div>
