@@ -50,12 +50,6 @@ import { useRouter } from "vue-router";
 
 const controlMenu = [
   {
-    title: "Metricas",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "/admin/metrics",
-  },
-  {
     title: "Año escolar",
     caption: "github.com/quasarframework",
     icon: "code",

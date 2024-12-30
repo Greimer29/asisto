@@ -133,6 +133,7 @@ const endAttendanceList = async () => {
     attendanceList: { state: false },
   });
   console.log(data);
+  emits("reloadTable");
 };
 
 const filterAttendances = async () => {

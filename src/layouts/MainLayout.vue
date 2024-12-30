@@ -115,7 +115,7 @@ export default defineComponent({
               title: "Admin",
               caption: "github.com/quasarframework",
               icon: "fact_check",
-              link: "/admin/metrics",
+              link: "/admin/school-years",
             },
             {
               title: "Control",

@@ -38,10 +38,6 @@ const routes = [
         component: () => import("pages/admin/AdminPage.vue"),
         children: [
           {
-            path: "/admin/metrics",
-            component: () => import("pages/admin/MetricsPage.vue"),
-          },
-          {
             path: "/admin/school-years",
             component: () => import("pages/admin/SchoolyearPage.vue"),
           },
