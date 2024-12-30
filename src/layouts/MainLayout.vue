@@ -77,7 +77,7 @@ const menuList = [
     icon: "account_circle",
     link: "/account",
   },
-  {
+  /*{
     title: "Admin",
     caption: "github.com/quasarframework",
     icon: "fact_check",
@@ -88,7 +88,7 @@ const menuList = [
     caption: "github.com/quasarframework",
     icon: "fact_check",
     link: "/control/personal",
-  },
+  },*/
   {
     title: "Cerrar sesion",
     caption: "chat.quasar.dev",
@@ -105,6 +105,41 @@ export default defineComponent({
     const $q = useQuasar();
     const MyUserData = $q.sessionStorage.getItem("DataUser");
 
+    onMounted(() => {
+      switch (MyUserData.theUser.rol) {
+        case "Administrador":
+          menuList.splice(
+            2,
+            0,
+            {
+              title: "Admin",
+              caption: "github.com/quasarframework",
+              icon: "fact_check",
+              link: "/admin/metrics",
+            },
+            {
+              title: "Control",
+              caption: "github.com/quasarframework",
+              icon: "fact_check",
+              link: "/control/personal",
+            }
+          );
+          break;
+        case "Portero":
+          menuList.splice(2, 0, {
+            title: "Control",
+            caption: "github.com/quasarframework",
+            icon: "fact_check",
+            link: "/control/personal",
+          });
+          break;
+
+        default:
+          break;
+      }
+      console.log(MyUserData.theUser.rol, menuList);
+    });
+
     return {
       MyUserData,
       menuList,
@@ -112,6 +147,17 @@ export default defineComponent({
         if (link === "/") {
           router.replace(link);
           $q.sessionStorage.clear();
+          switch (MyUserData.theUser.rol) {
+            case "Administrador":
+              menuList.splice(2, 2);
+              break;
+            case "Portero":
+              menuList.splice(2, 1);
+              break;
+
+            default:
+              break;
+          }
         } else {
           router.push(link);
         }
