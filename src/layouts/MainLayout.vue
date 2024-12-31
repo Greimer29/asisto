@@ -137,7 +137,6 @@ export default defineComponent({
         default:
           break;
       }
-      console.log(MyUserData.theUser.rol, menuList);
     });
 
     return {
