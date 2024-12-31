@@ -4,7 +4,7 @@
     <q-separator inset />
     <div class="q-pa-md">
       <q-table
-        style="height: 400px"
+        style="max-height: 400px"
         flat
         bordered
         title="Treats"
@@ -27,14 +27,17 @@
             <template v-slot:append>
               <q-icon name="search" />
             </template>
-          </q-input> </template
-      ></q-table>
+          </q-input>
+        </template>
+      </q-table>
     </div>
   </q-card>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script setup>
+import { api } from "src/boot/axios";
+import { defineComponent, onMounted, ref } from "vue";
+import { useQuasar } from "quasar";
 
 const columns = [
   {
@@ -60,28 +63,31 @@ const columns = [
     sortable: true,
   },
   {
-    name: "schoolYear",
+    name: "date",
     align: "center",
-    label: "A;o escolar",
-    field: "school_year",
+    label: "Fecha",
+    field: "date",
     sortable: true,
   },
 ];
-const rows = [];
+const pagination = ref({
+  rowsPerPage: 0,
+});
+const rows = ref([]);
+const filter = ref("");
+const $q = useQuasar();
+const MyUserData = $q.sessionStorage.getItem("DataUser");
 
-export default defineComponent({
-  name: "IndexPage",
-  setup() {
-    const filter = ref("");
-    return {
-      columns,
-      rows,
-      filter,
+const getMyAttendances = async () => {
+  const { data } = await api.get(`attendances/${MyUserData.theUser.id}`);
+  data.forEach((element) => {
+    element.day = element.attendanceList.day;
+    element.date = element.attendanceList.date;
+  });
+  rows.value = data;
+};
 
-      pagination: ref({
-        rowsPerPage: 0,
-      }),
-    };
-  },
+onMounted(() => {
+  getMyAttendances();
 });
 </script>
