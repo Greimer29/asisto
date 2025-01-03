@@ -79,7 +79,7 @@ const $q = useQuasar();
 const MyUserData = $q.sessionStorage.getItem("DataUser");
 
 const getMyAttendances = async () => {
-  const { data } = await api.get(`attendances/${MyUserData.theUser.id}`);
+  const { data } = await api.get(`attendances/${MyUserData.id}`);
   data.forEach((element) => {
     element.day = element.attendanceList.day;
     element.date = element.attendanceList.date;

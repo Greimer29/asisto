@@ -2,76 +2,63 @@
   <q-page class="q-pa-sm">
     <div class="row q-col-gutter-sm">
       <div class="col-lg-12 col-md-8 col-xs-12 col-sm-12">
-        <q-card class="card-bg text-white no-shadow" bordered>
-          <q-card-section class="text-center bg-transparent">
-            <q-avatar size="130px" class="shadow-10">
+        <q-card class="no-shadow" bordered>
+          <q-card-section
+            class="text-center bg-dark"
+            style="min-height: 100px; max-height: 150px"
+          >
+            <q-avatar
+              size="130px"
+              style="top: 80px"
+              class="absolute-center shadow-10"
+            >
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
             </q-avatar>
-            <div class="text-h5 q-mt-md">Pratik Patel</div>
-            <div class="text-subtitle2">by Pratik Patel</div>
+          </q-card-section>
+          <q-card-section class="q-mt-md text-center">
+            <div class="text-h5 q-mt-md">
+              {{ user.name }} {{ user.lastName }}
+            </div>
+            <div class="text-subtitle2">{{ user.rol }}</div>
           </q-card-section>
         </q-card>
       </div>
       <div class="col-lg-6 col-md-4 col-xs-12 col-sm-12">
-        <q-card class="card-bg text-white no-shadow" bordered>
-          <q-card-section class="text-h6">
-            <div class="text-h6">Edit Profile</div>
-            <div class="text-subtitle2">Complete your profile</div>
+        <q-card class="card-bg no-shadow" bordered>
+          <q-card-section class="text-h6 q-pb-none flex">
+            <div class="text-h6">Editar Perfil</div>
+            <q-space></q-space>
+            <q-toggle v-model="editProfile" />
           </q-card-section>
           <q-card-section class="q-pa-sm">
             <q-list class="row">
               <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <q-item-section>
                   <q-input
-                    dark
-                    color="white"
+                    :readonly="!editProfile"
                     dense
-                    v-model="user_details.email"
-                    label="Email Address"
+                    v-model="user.name"
+                    label="Nombre"
                   />
                 </q-item-section>
               </q-item>
               <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <q-item-section>
                   <q-input
-                    dark
-                    color="white"
+                    :readonly="!editProfile"
                     dense
-                    v-model="user_details.first_name"
-                    label="First Name"
+                    v-model="user.lastName"
+                    label="Apellido"
                   />
                 </q-item-section>
               </q-item>
               <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <q-item-section>
                   <q-input
-                    dark
-                    color="white"
-                    dense
-                    v-model="user_details.last_name"
-                    label="Last Name"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <q-item-section>
-                  <q-input
-                    dark
-                    color="white"
-                    dense
-                    v-model="user_details.phone"
-                    label="Phone"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <q-item-section>
-                  <q-input
-                    dark
-                    color="white"
+                    :readonly="!editProfile"
                     autogrow
                     dense
-                    v-model="user_details.ci"
+                    v-model="user.ci"
                     label="Cedula"
                   />
                 </q-item-section>
@@ -79,82 +66,109 @@
               <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <q-item-section>
                   <q-input
-                    dark
-                    color="white"
-                    autogrow
+                    :readonly="!editProfile"
                     dense
-                    v-model="user_details.bornDate"
+                    v-model="user.bornDate"
                     label="Fecha de nacimiento"
-                  />
+                    mask="date"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="event" class="cursor-pointer">
+                        <q-popup-proxy
+                          cover
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date v-model="user.bornDate">
+                            <div class="row items-center justify-end">
+                              <q-btn
+                                v-close-popup
+                                label="Close"
+                                color="primary"
+                                flat
+                              />
+                            </div>
+                          </q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
                 </q-item-section>
               </q-item>
               <q-item class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <q-item-section>
                   <q-input
-                    dark
-                    color="white"
+                    :readonly="!editProfile"
                     autogrow
                     dense
-                    v-model="user_details.address"
-                    label="Address"
+                    v-model="user.phone"
+                    label="Telefono"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <q-item-section>
+                  <q-select
+                    :readonly="!editProfile"
+                    dense
+                    :options="religionOp"
+                    v-model="user.religion"
+                    label="Religion"
                   />
                 </q-item-section>
               </q-item>
             </q-list>
           </q-card-section>
           <q-card-actions align="right">
-            <q-btn class="text-capitalize bg-info text-white">
-              Update User Info
+            <q-btn
+              v-show="editProfile"
+              color="primary"
+              @click="updateUser(user)"
+            >
+              Actualizar
             </q-btn>
           </q-card-actions>
         </q-card>
       </div>
 
       <div class="col-lg-6 col-md-4 col-xs-12 col-sm-12">
-        <q-card class="card-bg text-white no-shadow" bordered>
-          <q-card-section class="text-h6 q-pa-sm">
-            <div class="text-h6">Change Password</div>
+        <q-card class="card-bg text- no-shadow" bordered>
+          <q-card-section class="text-h6 q-pa-sm flex">
+            <div class="text-h6">Cambiar credenciales</div>
+            <q-space></q-space>
+            <q-toggle v-model="changeCredentials" />
           </q-card-section>
           <q-card-section class="q-pa-sm row">
-            <q-item class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <q-item-section> New Password </q-item-section>
-            </q-item>
-            <q-item class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
               <q-item-section>
                 <q-input
-                  type="password"
-                  dark
+                  :readonly="!changeCredentials"
                   dense
-                  outlined
-                  color="white"
-                  round
-                  v-model="password_dict.new_password"
-                  label="New Password"
+                  v-model="user.email"
+                  label="Email"
                 />
               </q-item-section>
             </q-item>
-            <q-item class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <q-item-section> Confirm New Password </q-item-section>
-            </q-item>
             <q-item class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
               <q-item-section>
                 <q-input
+                  :readonly="!changeCredentials"
                   type="password"
-                  dark
                   dense
-                  outlined
-                  round
-                  color="white"
-                  v-model="password_dict.confirm_new_password"
-                  label="Confirm New Password"
+                  v-model="user.password"
+                  label="New Password"
                 />
               </q-item-section>
             </q-item>
           </q-card-section>
           <q-card-actions align="right">
-            <q-btn class="text-capitalize bg-info text-white"
-              >Change Password</q-btn
+            <q-btn
+              v-show="changeCredentials"
+              color="primary"
+              @click="sendNewCredentials(user.email, user.password)"
             >
+              Enviar
+            </q-btn>
           </q-card-actions>
         </q-card>
       </div>
@@ -163,21 +177,71 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref, watch } from "vue";
+import { useQuasar } from "quasar";
+import { api } from "src/boot/axios";
+
+const religionOp = [
+  "Adventista",
+  "Mormon",
+  "Catolic@",
+  "Evangelic@",
+  "Judi@",
+  "Cristian@",
+  "Ate@",
+];
 
 export default defineComponent({
   name: "UserProfile",
   setup() {
+    const $q = useQuasar();
+    const user = ref($q.sessionStorage.getItem("DataUser"));
+
+    const updateUser = async (user) => {
+      const { data } = await api.patch(`users/${user.id}`, { user });
+      if (data) {
+        $q.sessionStorage.set("DataUser", data);
+        window.location.reload();
+        $q.notify({
+          message: "Perfil editado exitosamente",
+          position: "top-right",
+          color: "positive",
+        });
+      } else {
+        $q.notify({
+          message: "Ocurrio un error inesperado",
+          color: "negative",
+        });
+      }
+    };
+
+    const sendNewCredentials = async (email, password) => {
+      const { data } = await api.patch(`users/${user.value.id}`, {
+        user: { email, password },
+      });
+      if (data) {
+        console.log(data);
+        $q.notify({
+          message: "Credenciales guardadas exitosamente",
+          position: "top-right",
+          color: "positive",
+        });
+      } else {
+        $q.notify({
+          message: "Ocurrio un error inesperado",
+          color: "negative",
+        });
+      }
+    };
+
     return {
-      user_details: {},
-      password_dict: {},
+      user,
+      religionOp,
+      editProfile: ref(false),
+      changeCredentials: ref(false),
+      updateUser,
+      sendNewCredentials,
     };
   },
 });
 </script>
-
-<style scoped>
-.card-bg {
-  background-color: #162b4d;
-}
-</style>

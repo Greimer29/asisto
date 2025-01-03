@@ -22,10 +22,10 @@
             </q-item-section>
             <q-item-section style="cursor: pointer">
               <div class="text-subtitle1">
-                {{ MyUserData.theUser.name }} {{ MyUserData.theUser.lastName }}
+                {{ MyUserData.name }} {{ MyUserData.lastName }}
               </div>
               <div class="text-caption">
-                {{ MyUserData.theUser.rol }}
+                {{ MyUserData.rol }}
               </div>
             </q-item-section>
             <q-menu>
@@ -77,18 +77,6 @@ const menuList = [
     icon: "account_circle",
     link: "/account",
   },
-  /*{
-    title: "Admin",
-    caption: "github.com/quasarframework",
-    icon: "fact_check",
-    link: "/admin/metrics",
-  },
-  {
-    title: "Control",
-    caption: "github.com/quasarframework",
-    icon: "fact_check",
-    link: "/control/personal",
-  },*/
   {
     title: "Cerrar sesion",
     caption: "chat.quasar.dev",
@@ -106,7 +94,7 @@ export default defineComponent({
     const MyUserData = $q.sessionStorage.getItem("DataUser");
 
     onMounted(() => {
-      switch (MyUserData.theUser.rol) {
+      switch (MyUserData.rol) {
         case "Administrador":
           menuList.splice(
             2,
@@ -146,7 +134,7 @@ export default defineComponent({
         if (link === "/") {
           router.replace(link);
           $q.sessionStorage.clear();
-          switch (MyUserData.theUser.rol) {
+          switch (MyUserData.rol) {
             case "Administrador":
               menuList.splice(2, 2);
               break;

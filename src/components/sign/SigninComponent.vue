@@ -103,7 +103,8 @@ export default defineComponent({
           });
           loading.value = false;
 
-          $q.sessionStorage.set("DataUser", data);
+          $q.sessionStorage.set("DataUser", data.theUser);
+          $q.sessionStorage.set("UserToken", data.token);
           $q.notify({
             message: `Bienvenido ${data.theUser.name}`,
             position: "top-right",
