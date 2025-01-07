@@ -182,7 +182,7 @@ import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 import { api } from "src/boot/axios";
 
-const rols = ["Administracion", "Docente", "Portero", "Limpieza"];
+const rols = ["Administracion", "Docente", "Portero", "Limpieza", "Obrero"];
 
 export default defineComponent({
   name: "SignupComponent",
