@@ -66,10 +66,10 @@ import { useQuasar } from "quasar";
 
 const menuList = [
   {
-    title: "Cartelera de cumplea;os",
-    caption: "quasar.dev",
-    icon: "cake",
-    link: "/birthday-cart",
+    title: "eventos",
+    caption: "Eventos del colegio",
+    icon: "event",
+    link: "/events",
   },
   {
     title: "Mi cuenta",
