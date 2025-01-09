@@ -84,12 +84,15 @@ export default defineComponent({
 
     const getPersonal = async () => {
       const { data } = await api.get("/users");
-      personal.value = data.filter((element) => {
-        return (
-          element.email !== "Admin@Admin.com" &&
-          element.email !== myUser.theUser.email
-        );
-      });
+      console.log(data);
+      if (data) {
+        personal.value = data.filter((element) => {
+          return (
+            element.email !== "Admin@Admin.com" &&
+            element.email !== myUser.email
+          );
+        });
+      }
     };
     return {
       personal,

@@ -47,24 +47,25 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
 const controlMenu = [
   {
     title: "Año escolar",
-    caption: "github.com/quasarframework",
-    icon: "code",
+    caption: "Promociones ",
+    icon: "calendar_month",
     link: "/admin/school-years",
   },
   {
-    title: "Lista de asistencias",
-    caption: "github.com/quasarframework",
-    icon: "code",
+    title: "Asistencias",
+    caption: "Listas de asistencias",
+    icon: "list",
     link: "/admin/attendance-list",
   },
   {
     title: "Horarios",
-    caption: "github.com/quasarframework",
-    icon: "code",
+    caption: "Horarios del personal",
+    icon: "schedule",
     link: "/admin/schedules",
   },
 ];
@@ -73,6 +74,28 @@ export default defineComponent({
   name: "ControlPage",
   setup() {
     const router = useRouter();
+    const $q = useQuasar();
+    const MyUserData = $q.sessionStorage.getItem("DataUser");
+
+    switch (MyUserData.pass) {
+      case 1 || 2:
+        controlMenu.splice(4, 0, {
+          title: "Permisos",
+          caption: "Administrar permisos",
+          icon: "visibility",
+          link: "/admin/pass",
+        });
+        controlMenu.splice(4, 0, {
+          title: "Eventos",
+          caption: "Administrar eventos",
+          icon: "event",
+          link: "/admin/events",
+        });
+        break;
+
+      default:
+        break;
+    }
     return {
       controlMenu,
       drawerLeft: ref(false),

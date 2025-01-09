@@ -12,8 +12,8 @@ const routes = [
         component: () => import("pages/IndexPage.vue"),
       },
       {
-        path: "/birthday-cart",
-        component: () => import("pages/BirthdayPage.vue"),
+        path: "/events",
+        component: () => import("pages/EventsPage.vue"),
       },
       {
         path: "/account",
@@ -52,6 +52,14 @@ const routes = [
           {
             path: "/admin/:month",
             component: () => import("pages/admin/SchedulesPage.vue"),
+          },
+          {
+            path: "/admin/pass",
+            component: () => import("pages/admin/PermisesPage.vue"),
+          },
+          {
+            path: "/admin/events",
+            component: () => import("pages/admin/EventsAdmin.vue"),
           },
         ],
       },
