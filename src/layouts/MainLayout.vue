@@ -31,19 +31,68 @@
             <q-menu>
               <q-list style="min-width: 100px">
                 <q-item
-                  v-for="(menu, index) in menuList"
-                  :key="index"
                   clickable
                   v-close-popup
                   tag="a"
-                  @click="goTo(menu.link)"
+                  @click="goTo('/account')"
                 >
-                  <q-item-section v-if="menu.icon" avatar>
-                    <q-icon :name="menu.icon" />
+                  <q-item-section avatar>
+                    <q-icon name="account_circle" />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>{{ menu.title }}</q-item-label>
-                    <q-item-label caption>{{ menu.caption }}</q-item-label>
+                    <q-item-label>Mi cuenta</q-item-label>
+                    <q-item-label caption>Perfil de usuario</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  clickable
+                  v-close-popup
+                  tag="a"
+                  @click="goTo('/events')"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="event" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Eventos</q-item-label>
+                    <q-item-label caption>Eventos para hoy</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  clickable
+                  v-close-popup
+                  tag="a"
+                  @click="goTo('/admin/schoolyears')"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="admin_panel_settings" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Admin</q-item-label>
+                    <q-item-label caption>Panel administrativo</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  clickable
+                  v-close-popup
+                  tag="a"
+                  @click="goTo('/control/personal')"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="fact_check" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Control</q-item-label>
+                    <q-item-label caption>Control de acceso</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup tag="a" @click="goTo('/')">
+                  <q-item-section avatar>
+                    <q-icon name="logout" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Salir</q-item-label>
+                    <q-item-label caption>Cerrar sesion</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -64,27 +113,6 @@ import { useRouter } from "vue-router";
 import { defineComponent, onMounted, ref } from "vue";
 import { useQuasar } from "quasar";
 
-const menuList = [
-  {
-    title: "eventos",
-    caption: "Eventos del colegio",
-    icon: "event",
-    link: "/events",
-  },
-  {
-    title: "Mi cuenta",
-    caption: "github.com/quasarframework",
-    icon: "account_circle",
-    link: "/account",
-  },
-  {
-    title: "Cerrar sesion",
-    caption: "chat.quasar.dev",
-    icon: "logout",
-    link: "/",
-  },
-];
-
 export default defineComponent({
   name: "MainLayout",
 
@@ -93,58 +121,12 @@ export default defineComponent({
     const $q = useQuasar();
     const MyUserData = $q.sessionStorage.getItem("DataUser");
 
-    onMounted(() => {
-      switch (MyUserData.rol) {
-        case "Administrador":
-          menuList.splice(
-            2,
-            0,
-            {
-              title: "Admin",
-              caption: "github.com/quasarframework",
-              icon: "fact_check",
-              link: "/admin/school-years",
-            },
-            {
-              title: "Control",
-              caption: "github.com/quasarframework",
-              icon: "fact_check",
-              link: "/control/personal",
-            }
-          );
-          break;
-        case "Portero":
-          menuList.splice(2, 0, {
-            title: "Control",
-            caption: "github.com/quasarframework",
-            icon: "fact_check",
-            link: "/control/personal",
-          });
-          break;
-
-        default:
-          break;
-      }
-    });
-
     return {
       MyUserData,
-      menuList,
       goTo(link) {
         if (link === "/") {
           router.replace(link);
           $q.sessionStorage.clear();
-          switch (MyUserData.rol) {
-            case "Administrador":
-              menuList.splice(2, 2);
-              break;
-            case "Portero":
-              menuList.splice(2, 1);
-              break;
-
-            default:
-              break;
-          }
         } else {
           router.push(link);
         }

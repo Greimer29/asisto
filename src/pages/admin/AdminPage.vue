@@ -19,20 +19,54 @@
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     >
       <q-scroll-area class="fit">
+        <q-item clickable v-close-popup tag="a" @click="goTo('schoolyears')">
+          <q-item-section avatar>
+            <q-icon name="calendar_month" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Año escolar</q-item-label>
+            <q-item-label caption>Promociones</q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item
-          v-for="(menu, index) in controlMenu"
-          :key="index"
           clickable
           v-close-popup
           tag="a"
-          @click="goTo(menu.link)"
+          @click="goTo('attendance-list')"
         >
-          <q-item-section v-if="menu.icon" avatar>
-            <q-icon :name="menu.icon" />
+          <q-item-section avatar>
+            <q-icon name="list" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ menu.title }}</q-item-label>
-            <q-item-label caption>{{ menu.caption }}</q-item-label>
+            <q-item-label>Asistencias</q-item-label>
+            <q-item-label caption>Listas de asistencias</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-close-popup tag="a" @click="goTo('schedules')">
+          <q-item-section avatar>
+            <q-icon name="schedule" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Horarios</q-item-label>
+            <q-item-label caption>Horarios del personal</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-close-popup tag="a" @click="goTo('pass')">
+          <q-item-section avatar>
+            <q-icon name="visibility" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Permisos</q-item-label>
+            <q-item-label caption>Administrar permisos</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-close-popup tag="a" @click="goTo('events')">
+          <q-item-section avatar>
+            <q-icon name="event" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Eventos</q-item-label>
+            <q-item-label caption>Administrar eventos</q-item-label>
           </q-item-section>
         </q-item>
       </q-scroll-area>
