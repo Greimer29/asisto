@@ -59,10 +59,15 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  v-if="
+                    MyUserData.pass === 1 ||
+                    MyUserData.pass === 2 ||
+                    MyUserData.pass === 3
+                  "
                   clickable
                   v-close-popup
                   tag="a"
-                  @click="goTo('/admin/schoolyears')"
+                  @click="goTo('/admin/school-years')"
                 >
                   <q-item-section avatar>
                     <q-icon name="admin_panel_settings" />
@@ -73,6 +78,11 @@
                   </q-item-section>
                 </q-item>
                 <q-item
+                  v-if="
+                    MyUserData.pass === 4 ||
+                    MyUserData.pass === 2 ||
+                    MyUserData.pass === 1
+                  "
                   clickable
                   v-close-popup
                   tag="a"
@@ -120,6 +130,7 @@ export default defineComponent({
     const router = useRouter();
     const $q = useQuasar();
     const MyUserData = $q.sessionStorage.getItem("DataUser");
+    const MyToken = $q.sessionStorage.getItem("UserToken");
 
     return {
       MyUserData,

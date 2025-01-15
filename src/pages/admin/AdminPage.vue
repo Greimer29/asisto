@@ -19,7 +19,7 @@
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     >
       <q-scroll-area class="fit">
-        <q-item clickable v-close-popup tag="a" @click="goTo('schoolyears')">
+        <q-item clickable v-close-popup tag="a" @click="goTo('school-years')">
           <q-item-section avatar>
             <q-icon name="calendar_month" />
           </q-item-section>
@@ -51,7 +51,13 @@
             <q-item-label caption>Horarios del personal</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-close-popup tag="a" @click="goTo('pass')">
+        <q-item
+          v-if="MyUserData.pass === 1"
+          clickable
+          v-close-popup
+          tag="a"
+          @click="goTo('pass')"
+        >
           <q-item-section avatar>
             <q-icon name="visibility" />
           </q-item-section>
@@ -111,27 +117,9 @@ export default defineComponent({
     const $q = useQuasar();
     const MyUserData = $q.sessionStorage.getItem("DataUser");
 
-    switch (MyUserData.pass) {
-      case 1 || 2:
-        controlMenu.splice(4, 0, {
-          title: "Permisos",
-          caption: "Administrar permisos",
-          icon: "visibility",
-          link: "/admin/pass",
-        });
-        controlMenu.splice(4, 0, {
-          title: "Eventos",
-          caption: "Administrar eventos",
-          icon: "event",
-          link: "/admin/events",
-        });
-        break;
-
-      default:
-        break;
-    }
     return {
       controlMenu,
+      MyUserData,
       drawerLeft: ref(false),
       goTo(link) {
         router.push(link);

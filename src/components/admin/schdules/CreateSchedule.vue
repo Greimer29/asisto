@@ -31,6 +31,7 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <q-input
+            label="Hora de entrada"
             outlined
             rounded
             v-model="schedule.timeIn"
@@ -57,6 +58,7 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <q-input
+            label="Hora de salida"
             outlined
             rounded
             v-model="schedule.timeOut"
@@ -128,8 +130,8 @@ const $q = useQuasar();
 if (!props.edit) {
   schedule.value = {
     turn: "",
-    timeIn: moment().format("YYYY/MM/DD"),
-    timeOut: moment().format("YYYY/MM/DD"),
+    timeIn: moment().format("hh:mm A"),
+    timeOut: moment().format("hh:mm A"),
     state: "",
   };
 } else {
