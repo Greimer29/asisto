@@ -33,7 +33,7 @@
           </q-td>
         </template>
         <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
+          <q-td :props="props" v-if="!veryAtendance(props.row)">
             {{ console.log(props.row) }}
             <div>
               <q-btn
@@ -109,11 +109,19 @@ const getPersonal = async () => {
     personal.value = data.filter((element) => {
       return element.email !== "Admin@Admin.com";
     });
-    personal.value.forEach((element) => {
-      element.turn = element.schedule_users[0].turn;
+    personal.value.forEach((item) => {
+      if (item.schedule_users.length > 0) {
+        item.turn = item.schedule_users[0].turn;
+      }
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+const veryAtendance = (person) => {
+  if (person.attendances.length > 0) {
+    return person.attendances.find((item) => item.state === 1);
   }
 };
 
