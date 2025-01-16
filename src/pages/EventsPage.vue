@@ -14,10 +14,27 @@
       <q-tab name="efemerides" label="Efemerides" />
     </q-tabs>
     <q-tab-panels v-model="tabs" animated>
-      <q-tab-panel name="events">
-        <div>Acompañanos a vivir estos momentos planificados para ti</div>
+      <q-tab-panel name="events" style="height: 85vh">
+        <div v-if="events.length <= 0">
+          <div class="text-center text-h6 text-weight-bold text-italic texts">
+            No se encontraron eventos
+          </div>
+        </div>
+        <div
+          class="text-center text-h6 text-weight-bold text-italic texts"
+          v-if="events.length > 0"
+        >
+          Acompañanos a vivir estos momentos <br />
+          planificados para ti
+        </div>
         <q-separator />
-        <q-table :rows="events" grid :rows-per-page-options="[0]" hide-bottom>
+        <q-table
+          :rows="events"
+          grid
+          :rows-per-page-options="[0]"
+          hide-bottom
+          v-if="events.length > 0"
+        >
           <template v-slot:item="props">
             <q-card class="events-item q-ma-sm" bordered>
               <q-card-section class="text-center q-pa-none">
