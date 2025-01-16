@@ -135,11 +135,19 @@ const getPersonal = async () => {
 };
 
 const removePermise = async (type, user) => {
-  if (type === "control") {
+  if (type === "control" && user.pass === 4) {
+    const pass = 0;
+    const resp = await api.patch(`users/${user.id}`, { user: { pass } });
+    console.log(resp);
+  } else if (type === "control" && user.pass === 2) {
     const pass = 3;
     const resp = await api.patch(`users/${user.id}`, { user: { pass } });
     console.log(resp);
-  } else if (type === "admin") {
+  } else if (type === "admin" && user.pass === 3) {
+    const pass = 0;
+    const resp = await api.patch(`users/${user.id}`, { user: { pass } });
+    console.log(resp);
+  } else if (type === "admin" && user.pass === 2) {
     const pass = 4;
     const resp = await api.patch(`users/${user.id}`, { user: { pass } });
     console.log(resp);
@@ -148,8 +156,16 @@ const removePermise = async (type, user) => {
 };
 
 const addPermise = async (type, user) => {
-  if (type === "control" && user.pass === 3) {
+  if (type === "control" && user.pass === 0) {
+    const pass = 4;
+    const resp = await api.patch(`users/${user.id}`, { user: { pass } });
+    console.log(resp);
+  } else if (type === "control" && user.pass === 3) {
     const pass = 2;
+    const resp = await api.patch(`users/${user.id}`, { user: { pass } });
+    console.log(resp);
+  } else if (type === "admin" && user.pass === 0) {
+    const pass = 3;
     const resp = await api.patch(`users/${user.id}`, { user: { pass } });
     console.log(resp);
   } else if (type === "admin" && user.pass === 4) {
