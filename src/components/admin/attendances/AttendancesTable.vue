@@ -47,6 +47,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import AttendancesList from "src/components/admin/attendances/AttendancesList.vue";
+import moment from "moment";
 
 const emits = defineEmits(["changeComponent", "closeModal", "reloadTable"]);
 const props = defineProps({
@@ -60,29 +61,6 @@ const columns = [{ name: "mont", field: (row) => row.label }];
 const rowData = ref(null);
 const realizedMonths = ref([]);
 const isOpenedMonth = ref(false);
-
-const getMonthName = (monthIndex) => {
-  const monthNames = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviember",
-    "Diciembre",
-  ];
-  return monthNames[monthIndex];
-};
-
-const months = Array.from({ length: 12 }, (_, index) => ({
-  label: getMonthName(index),
-  field: `${new Date().getFullYear()}/${index + 1}`,
-}));
 
 const chargeAttendaceListMonths = (monthList, attendaceList) => {
   const normalizeDate = (date) => {
@@ -126,8 +104,33 @@ const selectMonth = (data) => {
   }
 };
 
+//Prueba 1
+
+function getMesesFaltantes(fechaInicio, fechaFin) {
+  const start = moment(fechaInicio, "YYYY/MM/DD");
+  const end = moment(fechaFin, "YYYY/MM/DD");
+  const mesesFaltantes = [];
+
+  while (start.isBefore(end)) {
+    mesesFaltantes.push({
+      field: start.format("YYYY/MM"),
+      label: start.format("MMMM"),
+    });
+    start.add(1, "month");
+  }
+
+  return mesesFaltantes;
+}
+
+//fin de ptueba 1
+
 onMounted(() => {
+  const { dateStart, dateEnd } = props.schoolYearData;
+  const mesesFaltantes = getMesesFaltantes(dateStart, dateEnd);
   const { attendanceLists } = props.schoolYearData;
-  realizedMonths.value = chargeAttendaceListMonths(months, attendanceLists);
+  realizedMonths.value = chargeAttendaceListMonths(
+    mesesFaltantes,
+    attendanceLists
+  );
 });
 </script>
