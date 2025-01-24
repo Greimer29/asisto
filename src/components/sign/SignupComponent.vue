@@ -140,37 +140,6 @@
       label-class="text-teal"
       label-style="font-size: 1.1em"
     />
-
-    <q-dialog
-      class="z-top"
-      v-model="persistent"
-      persistent
-      transition-show="scale"
-      transition-hide="scale"
-    >
-      <q-card style="min-width: 350px">
-        <q-card-section>
-          <div class="text-h6 text-center">
-            Verifique para crear usuario con este rol
-          </div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input
-            label="codigo de verificacion"
-            dense
-            v-model="cod"
-            autofocus
-            @keyup.enter="prompt = false"
-          />
-        </q-card-section>
-
-        <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Cancel" v-close-popup @click="loading = false" />
-          <q-btn flat label="Send" v-close-popup @click="validateUser" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </q-card>
 </template>
 
@@ -282,14 +251,7 @@ export default defineComponent({
     const validations = () => {
       loading.value = true;
       if (validateFields()) {
-        if (
-          user.value.rol === "Administracion" ||
-          user.value.rol === "Portero"
-        ) {
-          persistent.value = true;
-        } else {
-          createAccount(user.value);
-        }
+        createAccount(user.value);
       }
     };
 

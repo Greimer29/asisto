@@ -14,9 +14,13 @@
           <q-item>
             <q-item-section avatar>
               <q-avatar size="48px">
-                <img
-                  src="https://cdn.quasar.dev/img/avatar6.jpg"
-                  draggable="false"
+                <q-img
+                  v-if="MyUserData.urlImg"
+                  :src="`http://localhost:3333/users/uploads/${MyUserData.urlImg}`"
+                />
+                <q-img
+                  v-if="!MyUserData.urlImg"
+                  src="../../public/icons/user-profile-icon-free-vector.jpg"
                 />
               </q-avatar>
             </q-item-section>

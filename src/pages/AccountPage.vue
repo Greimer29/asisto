@@ -9,23 +9,20 @@
           >
             <q-avatar
               size="130px"
-              style="top: 80px"
-              class="absolute-center shadow-10"
+              style="top: 80px; cursor: pointer; background-color: aliceblue"
+              class="avatar absolute-center shadow-10"
+              @click="editAvatar = true"
             >
-              <div
-                class="absolute-bottom text-right q-pb-md"
-                style="cursor: pointer"
-                @click="editAvatar = true"
-              >
-                <q-avatar
-                  color="grey"
-                  text-color="black"
-                  icon="camera"
-                  size="40px"
-                  font-size="40px"
-                />
-              </div>
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <q-img
+                v-if="!user.urlImg"
+                style="max-width: 130px"
+                src="../../public/icons/user-profile-icon-free-vector.jpg"
+              />
+              <q-img
+                v-if="user.urlImg"
+                style="max-width: 130px"
+                :src="`http://localhost:3333/users/uploads/${user.urlImg}`"
+              />
             </q-avatar>
           </q-card-section>
           <q-card-section class="q-mt-md text-center">
@@ -235,30 +232,28 @@ export default defineComponent({
     const handleUpload = (info) => {
       if (info.xhr.response) {
         userAvatar.value = info.xhr.response;
+        updateUser(user.value);
       }
     };
 
     const updateUser = async (user) => {
       if (userAvatar.value) {
         user.urlImg = `users/${userAvatar.value}`;
+      }
+      try {
         const { data } = await api.patch(`users/${user.id}`, { user });
-        console.log(data);
-      } else {
-        const { data } = await api.patch(`users/${user.id}`, { user });
-        if (data) {
-          $q.sessionStorage.set("DataUser", data);
-          window.location.reload();
-          $q.notify({
-            message: "Perfil editado exitosamente",
-            position: "top-right",
-            color: "positive",
-          });
-        } else {
-          $q.notify({
-            message: "Ocurrio un error inesperado",
-            color: "negative",
-          });
-        }
+        $q.sessionStorage.set("DataUser", data);
+        $q.notify({
+          message: "Perfil editado exitosamente",
+          position: "top-right",
+          color: "positive",
+        });
+        window.location.reload();
+      } catch (error) {
+        $q.notify({
+          message: error,
+          color: "negative",
+        });
       }
     };
 
@@ -294,3 +289,9 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.avatar:hover {
+  background-color: rgb(140, 179, 213);
+  box-shadow: 1px 1px 50px 2px;
+}
+</style>
