@@ -12,6 +12,19 @@
               style="top: 80px"
               class="absolute-center shadow-10"
             >
+              <div
+                class="absolute-bottom text-right q-pb-md"
+                style="cursor: pointer"
+                @click="editAvatar = true"
+              >
+                <q-avatar
+                  color="grey"
+                  text-color="black"
+                  icon="camera"
+                  size="40px"
+                  font-size="40px"
+                />
+              </div>
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
             </q-avatar>
           </q-card-section>
@@ -22,6 +35,25 @@
             <div class="text-subtitle2">{{ user.rol }}</div>
           </q-card-section>
         </q-card>
+        <q-dialog v-model="editAvatar">
+          <q-card>
+            <q-card-section>
+              <div class="text-center text-h6 text-bold">
+                Cambiar imagen de perfil
+                <q-separator></q-separator>
+              </div>
+            </q-card-section>
+            <q-card-section>
+              <q-uploader
+                :multiple="false"
+                url="http://localhost:3333/users/upload"
+                accept=".png, .jpeg, .jpg, image/*"
+                field-name="avatar"
+                @uploaded="handleUpload"
+              />
+            </q-card-section>
+          </q-card>
+        </q-dialog>
       </div>
       <div class="col-lg-6 col-md-4 col-xs-12 col-sm-12">
         <q-card class="card-bg no-shadow" bordered>
@@ -196,22 +228,37 @@ export default defineComponent({
   setup() {
     const $q = useQuasar();
     const user = ref($q.sessionStorage.getItem("DataUser"));
+    console.log(user.value);
+    const editAvatar = ref(false);
+    const userAvatar = ref(null);
+
+    const handleUpload = (info) => {
+      if (info.xhr.response) {
+        userAvatar.value = info.xhr.response;
+      }
+    };
 
     const updateUser = async (user) => {
-      const { data } = await api.patch(`users/${user.id}`, { user });
-      if (data) {
-        $q.sessionStorage.set("DataUser", data);
-        window.location.reload();
-        $q.notify({
-          message: "Perfil editado exitosamente",
-          position: "top-right",
-          color: "positive",
-        });
+      if (userAvatar.value) {
+        user.urlImg = `users/${userAvatar.value}`;
+        const { data } = await api.patch(`users/${user.id}`, { user });
+        console.log(data);
       } else {
-        $q.notify({
-          message: "Ocurrio un error inesperado",
-          color: "negative",
-        });
+        const { data } = await api.patch(`users/${user.id}`, { user });
+        if (data) {
+          $q.sessionStorage.set("DataUser", data);
+          window.location.reload();
+          $q.notify({
+            message: "Perfil editado exitosamente",
+            position: "top-right",
+            color: "positive",
+          });
+        } else {
+          $q.notify({
+            message: "Ocurrio un error inesperado",
+            color: "negative",
+          });
+        }
       }
     };
 
@@ -239,8 +286,10 @@ export default defineComponent({
       religionOp,
       editProfile: ref(false),
       changeCredentials: ref(false),
+      editAvatar,
       updateUser,
       sendNewCredentials,
+      handleUpload,
     };
   },
 });

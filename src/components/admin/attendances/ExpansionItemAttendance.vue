@@ -4,10 +4,12 @@
     :label="attlistData.day"
     :caption="attlistData.date"
   >
-    <div class="q-gutter-md q-pt-md text-weight-bold flex justify-between">
-      <span class="q-pl-xl">Nombre</span
-      ><span class="q-pl-xl">Hora Entrada</span>
-      <span class="q-pr-xl">HoHora Salida</span>
+    <div
+      class="q-gutter-md q-pt-md text-weight-bold flex justify-between justify-around"
+    >
+      <div>Nombre</div>
+      <div>Hora Entrada</div>
+      <div>Hora Salida</div>
     </div>
     <q-separator />
     <q-item v-for="(attendance, index) in attlistData.attendances" :key="index">
@@ -26,3 +28,5 @@ const props = defineProps({
   attlistData: Object,
 });
 </script>
+
+<style scoped></style>
