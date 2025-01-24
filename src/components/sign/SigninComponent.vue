@@ -1,24 +1,22 @@
 <template>
   <q-card class="full-width full-height" flat>
     <q-card-section>
-      <q-avatar
-        size="200px"
-        style="top: 50px"
-        class="absolute-center shadow-10"
-      >
+      <q-avatar style="top: 50px" class="logo absolute-center shadow-10">
         <img src="/public/images/login/logo-school.jpeg" />
       </q-avatar>
     </q-card-section>
-    <q-card-section class="q-mt-xl">
+    <q-card-section class="login_section">
       <div class="text-center q-mt-lg q-pt-xl">
-        <div class="col text-h4 ellipsis">Inicia Sesion</div>
-        <div class="col text-subtitle1">
-          Inicia sesion en ASISTO GO para acceder a las maravilals de esta app
+        <div
+          class="text-h5 ellipsis"
+          style="font-family: 'Horizon'; font-style: bold"
+        >
+          INICIA SESION
         </div>
         <q-separator></q-separator>
       </div>
     </q-card-section>
-    <q-card-section class="pruebe q-mt-sm">
+    <q-card-section class="pruebe flex-center q-mt-sm">
       <q-form>
         <q-input
           outlined
@@ -143,6 +141,14 @@ export default defineComponent({
   background-image: url("../../public/images/login/loginLayout.jpg");
 }
 
+.login_section {
+  margin-top: 60px;
+}
+
+.logo {
+  font-size: 200px;
+}
+
 .column-1,
 .column-2 {
   flex: 1;
@@ -174,6 +180,7 @@ export default defineComponent({
 .pruebe {
   padding-left: 6em;
   padding-right: 6em;
+  margin-top: 50px;
 }
 
 @keyframes fadeOutLeft {
@@ -193,6 +200,14 @@ export default defineComponent({
   .pruebe {
     padding-left: 10px;
     padding-right: 10px;
+    margin-top: 5px;
+    height: 500px;
+  }
+  .logo {
+    font-size: 150px;
+  }
+  .login_section {
+    margin-top: 20px;
   }
 }
 </style>

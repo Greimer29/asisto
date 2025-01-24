@@ -1,7 +1,7 @@
 <template>
   <q-card class="full-width full-height" flat>
     <q-card-section>
-      <q-avatar size="140px" style="top: 0px" class="absolute-center shadow-7">
+      <q-avatar style="top: 0px" class="logo absolute-center shadow-7">
         <img src="/public/images/login/logo-school.jpeg" />
       </q-avatar>
     </q-card-section>
@@ -10,11 +10,11 @@
         <div class="col text-h6 ellipsis">Crear cuenta</div>
         <q-separator></q-separator>
       </div>
-      <q-form class="q-gutter-md">
+      <q-form class="q-gutter-md scroll-container">
         <q-scroll-area
           :thumb-style="thumbStyle"
           :bar-style="barStyle"
-          style="height: 640px"
+          class="scroll_area"
         >
           <q-input
             outlined
@@ -288,12 +288,15 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.z-top {
-  z-index: 10;
+.logo {
+  font-size: 130px;
 }
 .pruebe {
   padding-left: 6em;
   padding-right: 6em;
+}
+.scroll_area {
+  height: 600px;
 }
 @media (max-width: 1000px) {
   .column-1 {
@@ -302,6 +305,13 @@ export default defineComponent({
   .pruebe {
     padding-left: 10px;
     padding-right: 10px;
+    height: 500px;
+  }
+  .logo {
+    font-size: 120px;
+  }
+  .scroll_area {
+    height: 420px;
   }
 }
 </style>

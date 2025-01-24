@@ -39,13 +39,11 @@
           </div>
           <div class="column-2 flex flex-column items-end">
             <SigninComponent
-              style="min-height: 780px; max-height: 780px"
               v-if="!register"
               @change-component="register = !register"
               class="column-in"
             />
             <SignupComponent
-              style="min-height: 780px; max-height: 780px"
               v-if="register"
               @change-component="register = !register"
               class="column-in"
@@ -116,6 +114,8 @@ export default defineComponent({
   animation-name: fadeInRight;
   animation-duration: 1s;
   animation-fill-mode: both;
+  min-height: 780px;
+  max-height: 780px;
 }
 
 .column-out {
@@ -148,6 +148,10 @@ export default defineComponent({
 @media (max-width: 1000px) {
   .column-1 {
     display: none;
+  }
+  .column-in {
+    min-height: 580px;
+    max-height: 580px;
   }
   .pruebe {
     padding-left: 10px;
