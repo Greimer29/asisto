@@ -2,7 +2,7 @@
   <q-card class="full-width full-height" flat>
     <q-card-section>
       <q-avatar style="top: 0px" class="logo absolute-center shadow-7">
-        <img src="/public/images/login/logo-school.jpeg" />
+        <img src="/public/images/login/logo-school-mar.jpeg" />
       </q-avatar>
     </q-card-section>
     <q-card-section class="pruebe">

@@ -97,8 +97,9 @@ export default defineComponent({
 .z-top {
   z-index: 10;
 }
+
 .aja {
-  background-image: url("../../public/images/login/loginLayout.jpg");
+  background-color: #dfdfe2;
 }
 .pruebe {
   padding-left: 6em;

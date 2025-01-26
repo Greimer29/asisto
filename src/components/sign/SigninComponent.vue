@@ -2,7 +2,7 @@
   <q-card class="full-width full-height" flat>
     <q-card-section>
       <q-avatar style="top: 50px" class="logo absolute-center shadow-10">
-        <img src="/public/images/login/logo-school.jpeg" />
+        <img src="/public/images/login/logo-school-mar.jpeg" />
       </q-avatar>
     </q-card-section>
     <q-card-section class="login_section">
@@ -85,8 +85,8 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   name: "SigninComponent",
   setup() {
-    const email = ref("kenyer@gmail.com");
-    const password = ref("123");
+    const email = ref("");
+    const password = ref("");
     const loading = ref(false);
     const $q = useQuasar();
     const router = useRouter();
@@ -135,10 +135,6 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   width: 90%;
-}
-
-.aja {
-  background-image: url("../../public/images/login/loginLayout.jpg");
 }
 
 .login_section {
